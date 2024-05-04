@@ -1,16 +1,31 @@
 from os import urandom
 from typing import List
-
+import string as strings
+import secrets
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import RedirectResponse
 from utils.gcp import upload_to_bucket, get_list_by_room
-app = FastAPI(debug=True)
+from fastapi.middleware.cors import CORSMiddleware
 
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    expose_headers=["*"],
+    allow_headers=["*"],
+)
+
+SYMBOLS = "@#!$%()*+-.:;<=>[]^_~"
+def generate_hash():
+    charset = strings.ascii_letters + strings.digits + SYMBOLS
+    return ''.join([secrets.choice(charset) for _ in range(32)])
 
 @app.get("/generate/")
 async def generate():
     "Generates a random room hash."
-    return {'room_hash': str(urandom(32))}
+    return generate_hash()
 
 @app.get("/")
 async def root():
@@ -18,7 +33,7 @@ async def root():
     return RedirectResponse("/docs")
 
 @app.get("/list/{room_hash}/")
-async def list_files(room_hash: str):
+async def list_files(room_hash: str) -> List[str]:
     """Returns the list of files in the bucket in the form of a list of URLs."""
     if len(room_hash) != 32:
         raise HTTPException(status_code=400, detail='Invalid room hash')

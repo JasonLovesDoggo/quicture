@@ -7,6 +7,7 @@ import { cn } from "@/utils/cn";
 import { GenerateHash, validateHash } from "../../utils/crypto";
 import { useToast } from "@/components/ui/use-toast";
 import { redirect, useRouter } from "next/navigation";
+import { Checkbox } from "../ui/checkbox";
 
 const MainBody = ({ className }: { className?: string }) => {
   return (
@@ -58,7 +59,7 @@ const UserForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-end flex-col gap-20 pb-10">
+    <div className="flex justify-center items-start flex-col gap-3 pb-10">
       <div className="relative w-[600px]">
         <Input
           className="w-full"
@@ -73,9 +74,16 @@ const UserForm = () => {
           Join Room
         </Button>
       </div>
-      <Button className="h-14 w-[600px]" onClick={createRoom}>
+
+      <Button className="h-14 w-[600px] mt-5" onClick={createRoom}>
         Create Room
       </Button>
+      <div className="flex items-center pl-8">
+        <Checkbox id="terms" />
+        <label htmlFor="terms" className="text-sm font-medium pl-2">
+          Wanna save images for 7 days?
+        </label>
+      </div>
     </div>
   );
 };
