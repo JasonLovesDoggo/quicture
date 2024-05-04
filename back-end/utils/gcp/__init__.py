@@ -4,7 +4,7 @@ import os
 from gcloud.aio.storage import Storage
 BUCKET_NAME = 'quickshare-images'
 CREDS_FILE = '/home/json/.secrets/gdsc/creds.json' 
-if os.getenv("ENVIROMENT", "local") == "production":
+if os.environ.get("ENVIROMENT", "local") == "production":
     CREDS_FILE = '/creds.json'
 
 
