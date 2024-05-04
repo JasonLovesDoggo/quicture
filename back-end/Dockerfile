@@ -1,20 +1,45 @@
-FROM python:3.10-slim
+FROM python:3.10-slim@sha256:161d1e3deddba156d7834d15e6fe4d010b3b6f69f18ee1cfba9348e712f4a4ba
 LABEL org.opencontainers.image.authors="Jason Cameron <contact@jasoncameron.dev>"
 LABEL org.opencontainers.image.source="https://github.com/JasonLovesDoggo/gdsc"
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1 \
+    PYTHONDONTWRITEBYTECODE 1 \
+    POETRY_NO_INTERACTION=1 \ 
+    POETRY_HOME="/poetry" \
+    POETRY_VIRTUALENVS_CREATE=false 
+    
+
+# ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
+    
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+    # deps for installing poetry
+    curl \
+    # deps for building python deps
+    build-essential 
+
+RUN python -m pip install setuptools aiohttp fastapi uvicorn gcloud-aio-storage --no-cache-dir
+
 
 WORKDIR /code
+
+
+
 # Install requirements via poetry
-COPY pyproject.toml poetry.lock /code/
-RUN python -m pip install --no-cache-dir poetry && \
-    python -m poetry config virtualenvs.in-project true && \
-    python -m poetry install --no-root && \ 
-    python -m pip uninstall poetry -y
+# COPY pyproject.toml poetry.lock /code/
+# RUN poetry install --no-root --no-dev && \
+#     python -m pip install fastapi uvicorn
+
+
+COPY . /code
 
 
 # 
-COPY . /code/
 
-# 
-CMD ["fastapi", "run", "app/main.py", "--proxy-headers", "--port", "80"]
+EXPOSE 80
+RUN ls
+# CMD /.venv/activate
+# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+RUN chmod +x entrypoint.sh
+# CMD ["./entrypoint.sh "]
+ENTRYPOINT [ "./entrypoint.sh" ]
+
