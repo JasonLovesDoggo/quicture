@@ -4,7 +4,8 @@ import { Input } from "../ui/input";
 import { Button } from "@/components/ui/button";
 import Spline from "@splinetool/react-spline";
 import { cn } from "@/utils/cn";
-import { GenerateHash, validateHash} from "../../utils/crypto";
+import { GenerateHash, validateHash } from "../../utils/crypto";
+import { useToast } from "@/components/ui/use-toast";
 
 const MainBody = ({ className }: { className?: string }) => {
   return (
@@ -25,17 +26,24 @@ const MainBody = ({ className }: { className?: string }) => {
 const UserForm = () => {
   const [code, setCode] = useState("");
 
+  const { toast } = useToast();
+
   const joinRoom = (code: string) => {
     if (!validateHash(code)) {
-      alert("Invalid code, please ensure that your code is 32 characters long and only contains alphanumeric characters.");
+      alert(
+        "Invalid code, please ensure that your code is 32 characters long and only contains alphanumeric characters."
+      );
     }
     // Add logic for joining room
   };
 
   const createRoom = () => {
     setCode(GenerateHash());
-
-    // Add logic for creating room
+    navigator.clipboard.writeText(code);
+    toast({
+      title: "Your code has been copied to the clipboard!",
+      description: "Share it with your friends to join the room.",
+    });
   };
 
   const saveInput = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,4 +1,5 @@
 import MainBody from "@/components/shared/MainBody";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
         </p>
       </div>
       <MainBody />
+      <Toaster />
     </div>
   );
 }
