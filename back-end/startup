@@ -1,0 +1,1 @@
+docker run gdsc -p 3800:80 -v /home/json/.secrets/gdsc/creds.json:/creds.json
