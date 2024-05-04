@@ -23,7 +23,7 @@ async def root():
     return RedirectResponse("/docs")
 
 @app.get("/list/{room_hash}/")
-async def list_files(room_hash: str):
+async def list_files(room_hash: str) -> List[str]:
     """Returns the list of files in the bucket in the form of a list of URLs."""
     if len(room_hash) != 32:
         raise HTTPException(status_code=400, detail='Invalid room hash')
