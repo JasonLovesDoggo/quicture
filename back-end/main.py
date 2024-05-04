@@ -8,13 +8,7 @@ from utils.gcp import upload_to_bucket, get_list_by_room
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(debug=True)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
 
 SYMBOLS = "@#!$%()*+-.:;<=>[]^_~"
 def generate_hash():
@@ -82,3 +76,4 @@ async def upload(room_hash: str, file: UploadFile = File(...)):
     
     return {'filename': file.filename, 'room_hash': room_hash}
 
+app.add_middleware(CORSMiddleware, allow_origins=["*"])
