@@ -53,7 +53,7 @@ async def upload_multi(room_hash: str, files: List[UploadFile] = File(...)):
             file.file.seek(0)
             # Upload the file to to your S3 service
             if file.filename is None:
-                file.filename = str(urandom(8)) # if there is no filename, generate a random one
+                file.filename = generate_hash()[:8] # if there is no filename, generate a random one
             await upload_to_bucket(room_hash, file.filename, contents)
         except Exception:
             raise HTTPException(status_code=500, detail='Something went wrong')
