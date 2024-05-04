@@ -9,6 +9,7 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
+    "Just redirects you to the docs page for the API."
     return RedirectResponse("/docs")
 
 @app.get("/list/{room_hash}/")
@@ -23,6 +24,7 @@ async def list_files(room_hash: str):
 
 @app.post('/upload/{room_hash}/')
 async def upload(room_hash: str, file: UploadFile = File(...)):
+    "Uploads a file to the bucket. The room_hash is the name of the folder in the bucket."
     if len(room_hash) != 32:
         raise HTTPException(status_code=400, detail='Invalid room hash')
 
