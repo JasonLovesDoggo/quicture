@@ -1,11 +1,16 @@
-from os import RTLD_NOLOAD, urandom
+from os import urandom
 from typing import List
 
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import RedirectResponse
 from utils.gcp import upload_to_bucket, get_list_by_room
-app = FastAPI()
+app = FastAPI(debug=True)
 
+
+@app.get("/generate/")
+async def generate():
+    "Generates a random room hash."
+    return {'room_hash': str(urandom(32))}
 
 @app.get("/")
 async def root():
@@ -21,6 +26,27 @@ async def list_files(room_hash: str):
     del raw_data['kind']
     parsed_image_links: List[str] = [obj["mediaLink"] for obj in raw_data["items"]]
     return parsed_image_links
+
+
+@app.post('/upload-multi/{room_hash}/')
+async def upload_multi(room_hash: str, files: List[UploadFile] = File(...)):
+    "Uploads multiple files to the bucket. The room_hash is the name of the folder in the bucket."
+    if len(room_hash) != 32:
+        raise HTTPException(status_code=400, detail='Invalid room hash')
+    for file in files:
+        try:
+            contents = file.file.read()
+            file.file.seek(0)
+            # Upload the file to to your S3 service
+            if file.filename is None:
+                file.filename = str(urandom(8)) # if there is no filename, generate a random one
+            await upload_to_bucket(room_hash, file.filename, contents)
+        except Exception:
+            raise HTTPException(status_code=500, detail='Something went wrong')
+        finally:
+            file.file.close()
+    
+    return {'room_hash': room_hash, 'files': [file.filename for file in files]}
 
 @app.post('/upload/{room_hash}/')
 async def upload(room_hash: str, file: UploadFile = File(...)):
@@ -41,3 +67,4 @@ async def upload(room_hash: str, file: UploadFile = File(...)):
         file.file.close()
     
     return {'filename': file.filename, 'room_hash': room_hash}
+
