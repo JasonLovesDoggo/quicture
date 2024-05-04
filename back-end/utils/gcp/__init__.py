@@ -4,8 +4,8 @@ import os
 from gcloud.aio.storage import Storage
 BUCKET_NAME = 'quickshare-images'
 CREDS_FILE = '/creds.json' 
-if os.environ.get("ENVIROMENT", "local") == "local":
-    CREDS_FILE = '/home/json/.secrets/gdsc/creds.json'
+# if os.environ.get("ENVIROMENT", "local") == "local":
+#     CREDS_FILE = '/home/json/.secrets/gdsc/creds.json'
 
 
 async def upload_to_bucket(room_hash: str, file_name: str, file_obj: bytes):
