@@ -3,7 +3,7 @@ from typing import List
 
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import RedirectResponse
-from .utils.gcp import upload_to_bucket, get_list_by_room
+from utils.gcp import upload_to_bucket, get_list_by_room
 app = FastAPI()
 
 
