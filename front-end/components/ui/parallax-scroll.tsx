@@ -37,6 +37,15 @@ export const ParallaxScroll = ({
   const translateSecond = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const translateThird = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
+  // Check if images is indeed an array
+  if (!Array.isArray(images)) {
+    console.error(
+      "Invalid images prop: Expected an array, received",
+      typeof images
+    );
+    return null; // Optionally, return an error component or message
+  }
+
   const third = Math.ceil(images.length / 3);
 
   const firstPart = images.slice(0, third);
