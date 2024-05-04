@@ -9,6 +9,9 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 fastapi = "^0.111.0"
+aiohttp = "^3.9.5"
+aiofile = "^3.8.8"
+gcloud-aio-storage = "^9.3.0"
 
 
 [build-system]
