@@ -6,20 +6,49 @@ import { Download } from "lucide-react";
 
 const RoomBody = ({ id }: { id: string }) => {
   const [images, setImages] = useState<string[]>([]);
-
+  console.log("prev images", images);
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const filesArray = Array.from(e.target.files).filter((file) =>
-        file.type.startsWith("image/")
-      );
-      const imageUrls = filesArray.map((file) => URL.createObjectURL(file));
-      setImages(imageUrls);
-      // Additional logic to handle the submission can be added here
+      const formData = new FormData(); // Create a new FormData object
+      for (const file in e.target.files) {
+        formData.append("files[]", file)
+      }
+      console.warn("NDIWJDWODK");
+      console.log([...formData]);
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        accept: "application/json",
+        body: formData,
+      };
+
+      // Send the request with fetch
+      try {
+        const response = await fetch(
+          process.env.NEXT_PUBLIC_BACKEND! + `/upload-multi/${id}/`,
+          options
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to upload files: ${response.status} ${response.statusText}`
+          );
+        }
+
+        // Parse response if needed
+        const responseData = await response.text();
+
+        // Print the response
+        console.log(responseData);
+      } catch (error) {
+        console.error("Error uploading files:", error);
+      }
     }
   };
-
   useEffect(() => {
-    console.log(process.env.NEXT_PUBLIC_BACKEND);
+    // console.log(process.env.NEXT_PUBLIC_BACKEND);
     (async () =>
       setImages(
         await (
