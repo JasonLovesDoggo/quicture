@@ -9,3 +9,5 @@ services:
       - "8300:8300"
     volumes:
       - /home/json/.secrets/gdsc/creds.json:/creds.json
+      - /home/json/production/gdsc/log-format.yml:/log-format.yml
+      - /home/json/production/logs/gdsc/:/logs
