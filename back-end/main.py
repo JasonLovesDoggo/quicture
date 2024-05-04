@@ -1,13 +1,14 @@
 from typing import Union
 
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 
 
 @app.get("/")
-async def read_root():
-    return redirect("/docs")
+async def root():
+    return RedirectResponse("/docs")
 
 
 @app.get("/items/{item_id}")
