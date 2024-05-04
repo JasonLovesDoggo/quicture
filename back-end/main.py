@@ -10,11 +10,10 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
     allow_credentials=False,
+    allow_origins=['*', 'http://localhost:3000', '3000.vsc.jasoncameron.dev'],    
     allow_methods=["*"],
-    expose_headers=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
 SYMBOLS = "@#!$%()*+-.:;<=>[]^_~"
