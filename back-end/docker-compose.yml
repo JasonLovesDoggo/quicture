@@ -1,5 +1,7 @@
 services:
   backend:
+    environment:
+      - ENVIROMENT:production
     build:
       context: .
       dockerfile: Dockerfile
