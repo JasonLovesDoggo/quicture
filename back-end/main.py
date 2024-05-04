@@ -13,6 +13,7 @@ app.add_middleware(
     allow_origins=["*"],
     allow_credentials=False,
     allow_methods=["*"],
+    expose_headers=["*"],
     allow_headers=["*"],
 )
 
