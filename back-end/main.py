@@ -38,7 +38,7 @@ async def list_files(room_hash: str) -> List[str]:
         raise HTTPException(status_code=400, detail='Invalid room hash')
     raw_data = await get_list_by_room(room_hash)
     del raw_data['kind']
-    parsed_image_links: List[str] = [obj["mediaLink"] for obj in raw_data["items"]]
+    parsed_image_links: List[str] = [obj["mediaLink"] for obj in raw_data.get("items", [])]
     return parsed_image_links
 
 
