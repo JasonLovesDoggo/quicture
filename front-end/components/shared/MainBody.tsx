@@ -6,7 +6,7 @@ import Spline from "@splinetool/react-spline";
 import { cn } from "@/utils/cn";
 import { GenerateHash, validateHash } from "../../utils/crypto";
 import { useToast } from "@/components/ui/use-toast";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Checkbox } from "../ui/checkbox";
 
 const MainBody = ({ className }: { className?: string }) => {
@@ -28,14 +28,12 @@ const MainBody = ({ className }: { className?: string }) => {
 const UserForm = () => {
   const [code, setCode] = useState("");
   const router = useRouter();
-
+  const [isChecked, setIsChecked] = useState(false);
   const { toast } = useToast();
 
   const joinRoom = (code: string) => {
     if (!validateHash(code)) {
-      alert(
-        "Invalid code, please ensure that your code is 32 characters long and only contains alphanumeric characters."
-      );
+      alert("Invalid code, please ensure that your code is Correct.");
       return;
     }
     // Navigate to the room using the router
@@ -56,6 +54,10 @@ const UserForm = () => {
 
   const saveInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCode(e.target.value);
+  };
+  const handleCheckboxChange = (checked: boolean) => {
+    setIsChecked(checked);
+    console.log(checked);
   };
 
   return (
@@ -79,7 +81,11 @@ const UserForm = () => {
         Create Room
       </Button>
       <div className="flex items-center pl-8">
-        <Checkbox id="terms" />
+        <Checkbox
+          id="terms"
+          checked={isChecked}
+          onCheckedChange={handleCheckboxChange}
+        />
         <label htmlFor="terms" className="text-sm font-medium pl-2">
           Wanna save images for 7 days?
         </label>
