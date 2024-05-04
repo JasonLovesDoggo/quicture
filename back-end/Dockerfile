@@ -29,17 +29,9 @@ WORKDIR /code
 # RUN poetry install --no-root --no-dev && \
 #     python -m pip install fastapi uvicorn
 
-
 COPY . /code
 
-
-# 
-
-EXPOSE 80
-RUN ls
-# CMD /.venv/activate
-# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
 RUN chmod +x entrypoint.sh
-# CMD ["./entrypoint.sh "]
+
 ENTRYPOINT [ "./entrypoint.sh" ]
 
