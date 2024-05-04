@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "@/components/ui/button";
 import Spline from "@splinetool/react-spline";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
+import { GenerateHash, validateHash} from "../../utils/crypto";
 
 const MainBody = ({ className }: { className?: string }) => {
   return (
@@ -25,10 +26,15 @@ const UserForm = () => {
   const [code, setCode] = useState("");
 
   const joinRoom = (code: string) => {
+    if (!validateHash(code)) {
+      alert("Invalid code, please ensure that your code is 32 characters long and only contains alphanumeric characters.");
+    }
     // Add logic for joining room
   };
 
   const createRoom = () => {
+    setCode(GenerateHash());
+
     // Add logic for creating room
   };
 
