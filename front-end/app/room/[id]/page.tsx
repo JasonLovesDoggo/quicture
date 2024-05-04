@@ -1,7 +1,7 @@
 import RoomBody from "@/components/shared/RoomBody";
 import React from "react";
 
-const page = () => {
+export default function Page({ params }: { params: { slug: string } }) {
   return (
     <div className="dark md:h-screen h-screen w-full dark:bg-black bg-white dark:bg-dot-white/[0.2] bg-dot-black/[0.2]">
       <div className=" relative flex justify-start pl-7">
@@ -13,6 +13,4 @@ const page = () => {
       <RoomBody />
     </div>
   );
-};
-
-export default page;
+}
