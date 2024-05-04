@@ -7,7 +7,7 @@ from fastapi.responses import RedirectResponse
 from utils.gcp import upload_to_bucket, get_list_by_room
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+app = FastAPI(debug=True)
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=False,
@@ -38,7 +38,7 @@ async def list_files(room_hash: str) -> List[str]:
         raise HTTPException(status_code=400, detail='Invalid room hash')
     raw_data = await get_list_by_room(room_hash)
     del raw_data['kind']
-    parsed_image_links: List[str] = [obj["mediaLink"] for obj in raw_data["items"]]
+    parsed_image_links: List[str] = [obj["mediaLink"] for obj in raw_data.get("items", [])]
     return parsed_image_links
 
 
@@ -53,7 +53,7 @@ async def upload_multi(room_hash: str, files: List[UploadFile] = File(...)):
             file.file.seek(0)
             # Upload the file to to your S3 service
             if file.filename is None:
-                file.filename = str(urandom(8)) # if there is no filename, generate a random one
+                file.filename = generate_hash()[:8] # if there is no filename, generate a random one
             await upload_to_bucket(room_hash, file.filename, contents)
         except Exception:
             raise HTTPException(status_code=500, detail='Something went wrong')
