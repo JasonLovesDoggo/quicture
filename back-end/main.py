@@ -7,8 +7,9 @@ from fastapi.responses import RedirectResponse
 from utils.gcp import upload_to_bucket, get_list_by_room
 app = FastAPI(debug=True)
 
+SYMBOLS = "@#!$%()*+-.:;<=>[]^_~"
 def generate_hash():
-    charset = strings.ascii_letters + strings.digits + strings.punctuation 
+    charset = strings.ascii_letters + strings.digits + SYMBOLS
     return ''.join([secrets.choice(charset) for _ in range(32)])
 
 @app.get("/generate/")
