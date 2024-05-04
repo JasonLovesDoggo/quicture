@@ -1,16 +1,20 @@
 from os import urandom
 from typing import List
-
+import string as strings
+import secrets
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import RedirectResponse
 from utils.gcp import upload_to_bucket, get_list_by_room
 app = FastAPI(debug=True)
 
+def generate_hash():
+    charset = strings.ascii_letters + strings.digits + strings.punctuation 
+    return ''.join([secrets.choice(charset) for _ in range(32)])
 
 @app.get("/generate/")
 async def generate():
     "Generates a random room hash."
-    return {'room_hash': str(urandom(32))}
+    return generate_hash()
 
 @app.get("/")
 async def root():
