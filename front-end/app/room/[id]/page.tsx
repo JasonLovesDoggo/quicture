@@ -1,7 +1,10 @@
+"use client";
 import RoomBody from "@/components/shared/RoomBody";
+import { useParams } from "next/navigation";
 import React from "react";
 
 export default function Page({ params }: { params: { slug: string } }) {
+  const { id } = useParams();
   return (
     <div className="dark md:h-screen h-screen w-full dark:bg-black bg-white dark:bg-dot-white/[0.2] bg-dot-black/[0.2]">
       <div className=" relative flex justify-start pl-7">
@@ -10,7 +13,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           Quickture
         </p>
       </div>
-      <RoomBody />
+      <RoomBody id={id as string} />
     </div>
   );
 }

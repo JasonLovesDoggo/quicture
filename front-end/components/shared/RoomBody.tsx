@@ -1,9 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { ParallaxScroll } from "../ui/parallax-scroll";
 
-const RoomBody = () => {
+const RoomBody = ({ id }: { id: string }) => {
   const [images, setImages] = useState<string[]>([]);
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,6 +16,16 @@ const RoomBody = () => {
       // Additional logic to handle the submission can be added here
     }
   };
+
+  useEffect(() => {
+    console.log(process.env.NEXT_PUBLIC_BACKEND);
+    (async () =>
+      setImages(
+        await (
+          await fetch(process.env.NEXT_PUBLIC_BACKEND + `/list/${id}/`)
+        ).json()
+      ))();
+  }, []);
 
   return (
     <div className="h-screen flex items-center sm:justify-center">
