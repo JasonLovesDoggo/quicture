@@ -7,7 +7,7 @@ from fastapi.responses import RedirectResponse
 from utils.gcp import upload_to_bucket, get_list_by_room
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+app = FastAPI(debug=True)
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=False,
