@@ -5,13 +5,15 @@ import { ParallaxScroll } from "../ui/parallax-scroll";
 
 const RoomBody = ({ id }: { id: string }) => {
   const [images, setImages] = useState<string[]>([]);
-  console.log("images", images);
+  console.log("prev images", images);
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const formData = new FormData(); // Create a new FormData object
-      Array.from(e.target.files).map((file) => {
-        formData.append("file", file); // Append the file to the FormData object
-      });
+      for (const file in e.target.files) {
+        formData.append("files[]", file)
+      }
+      console.warn("NDIWJDWODK");
+      console.log([...formData]);
       const options = {
         method: "POST",
         headers: {
