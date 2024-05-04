@@ -5,7 +5,16 @@ import secrets
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import RedirectResponse
 from utils.gcp import upload_to_bucket, get_list_by_room
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(debug=True)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 SYMBOLS = "@#!$%()*+-.:;<=>[]^_~"
 def generate_hash():
