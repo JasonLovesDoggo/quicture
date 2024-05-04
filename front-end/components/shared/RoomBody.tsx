@@ -1,35 +1,27 @@
 "use client";
 import React, { useState } from "react";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { ParallaxScroll } from "../ui/parallax-scroll";
 
 const RoomBody = () => {
-  const [file, setFile] = useState<File | null>(null);
+  const [images, setImages] = useState<string[]>([]);
 
-  const handlechange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (file) {
-      console.log(file);
+      const filesArray = Array.from(e.target.files).filter((file) =>
+        file.type.startsWith("image/")
+      );
+      const imageUrls = filesArray.map((file) => URL.createObjectURL(file));
+      setImages(imageUrls);
+      // Additional logic to handle the submission can be added here
     }
   };
 
   return (
-    <div className=" h-full flex items-center justify-center">
-      <div className="fixed bottom-10 ">
-        <form onSubmit={handleSubmit}>
-          <div className="relative">
-            <Input type="file" onChange={handlechange} multiple />
-            <Button type="submit" className="absolute top-0 right-0">
-              Submit
-            </Button>
-          </div>
-        </form>
+    <div className="h-screen flex items-center sm:justify-center">
+      <ParallaxScroll images={images} />
+      <div className="fixed bottom-10">
+        <Input type="file" onChange={handleChange} multiple accept="image/*" />
       </div>
     </div>
   );
