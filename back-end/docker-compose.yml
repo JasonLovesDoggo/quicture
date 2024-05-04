@@ -1,0 +1,9 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - 8300:80
+    volumes:
+      - /home/json/.secrets/gdsc/creds.json:/creds.json
