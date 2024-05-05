@@ -7,18 +7,21 @@ const RoomBody = ({ id }: { id: string }) => {
   const [images, setImages] = useState<string[]>([]);
   console.log("prev images", images);
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.table(e.target.files);
     if (e.target.files) {
       const formData = new FormData(); // Create a new FormData object
-      for (const file in e.target.files) {
-        formData.append("files[]", file)
-      }
+      const imgArray = Array.from(e.target.files);
+
+      // formData.append("files[]", imgArray];
+      imgArray.forEach((file: File) => {
+        formData.append("files", file);
+      })
       console.warn("NDIWJDWODK");
-      console.log([...formData]);
       const options = {
         method: "POST",
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        // headers: {
+        //   "Content-Type": "multipart/form-data",
+        // },
         accept: "application/json",
         body: formData,
       };
