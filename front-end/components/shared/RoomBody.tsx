@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { ParallaxScroll } from "../ui/parallax-scroll";
 import { Download } from "lucide-react";
+import SlideMotionDiv from "../ui/slide-motion-div";
 
 const RoomBody = ({ id }: { id: string }) => {
   const [images, setImages] = useState<string[]>([]);
@@ -16,7 +17,7 @@ const RoomBody = ({ id }: { id: string }) => {
       // formData.append("files[]", imgArray];
       imgArray.forEach((file: File) => {
         formData.append("files", file);
-      })
+      });
       console.warn("NDIWJDWODK");
       const options = {
         method: "POST",
@@ -45,6 +46,11 @@ const RoomBody = ({ id }: { id: string }) => {
 
         // Print the response
         console.log(responseData);
+        setImages(
+          await (
+            await fetch(process.env.NEXT_PUBLIC_BACKEND + `/list/${id}/`)
+          ).json()
+        );
       } catch (error) {
         console.error("Error uploading files:", error);
       }
@@ -81,7 +87,14 @@ const RoomBody = ({ id }: { id: string }) => {
       )}
       <ParallaxScroll images={images} />
       <div className="fixed bottom-10">
-        <Input type="file" onChange={handleChange} multiple accept="image/*" />
+        <SlideMotionDiv delay={0.5}>
+          <Input
+            type="file"
+            onChange={handleChange}
+            multiple
+            accept="image/*"
+          />
+        </SlideMotionDiv>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import { GenerateHash, validateHash } from "../../utils/crypto";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "../ui/checkbox";
+import SlideMotionDiv from "../ui/slide-motion-div";
 
 const MainBody = ({ className }: { className?: string }) => {
   return (
@@ -62,34 +63,41 @@ const UserForm = () => {
 
   return (
     <div className="flex justify-center items-start flex-col gap-3 pb-10">
-      <div className="relative w-[600px]">
-        <Input
-          className="w-full"
-          placeholder="Enter code here"
-          value={code}
-          onChange={saveInput}
-        />
-        <Button
-          className="absolute right-0 top-0"
-          onClick={() => joinRoom(code)}
-        >
-          Join Room
-        </Button>
-      </div>
+      <SlideMotionDiv delay={0.5}>
+        <div className="relative w-[600px]">
+          <Input
+            className="w-full"
+            placeholder="Enter code here"
+            value={code}
+            onChange={saveInput}
+          />
+          <Button
+            className="absolute right-0 top-0"
+            onClick={() => joinRoom(code)}
+          >
+            Join Room
+          </Button>
+        </div>
+      </SlideMotionDiv>
 
-      <Button className="h-14 w-[600px] mt-5" onClick={createRoom}>
-        Create Room
-      </Button>
-      <div className="flex items-center pl-8">
-        <Checkbox
-          id="terms"
-          checked={isChecked}
-          onCheckedChange={handleCheckboxChange}
-        />
-        <label htmlFor="terms" className="text-sm font-medium pl-2">
-          Wanna save images for 7 days?
-        </label>
-      </div>
+      <SlideMotionDiv delay={1}>
+        <Button className="h-14 w-[600px] mt-5" onClick={createRoom}>
+          Create Room
+        </Button>
+      </SlideMotionDiv>
+
+      <SlideMotionDiv delay={1.25}>
+        <div className="flex items-center pl-8">
+          <Checkbox
+            id="terms"
+            checked={isChecked}
+            onCheckedChange={handleCheckboxChange}
+          />
+          <label htmlFor="terms" className="text-sm font-medium pl-2">
+            Wanna save images for 7 days?
+          </label>
+        </div>
+      </SlideMotionDiv>
     </div>
   );
 };
