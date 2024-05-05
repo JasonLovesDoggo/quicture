@@ -2,13 +2,13 @@ import {Box, Button, Content, Image, Media} from "react-bulma-components";
 import {generateFromString} from "generate-avatar";
 import React from "react";
 
-export default function UserInfo({myUsername, timestamp, sendRequest, disabled, subtext, color}) {
+export default function UserInfo({myUsername, timestamp, disabled, subtext, color}) {
     return (
         <Box style={!color ? {} : {backgroundColor: color}}>
             <Media>
                 <Media.Item renderAs="figure" position="left">
                     <Image rounded size={64} alt="64x64"
-                           src={`data:image/svg+xml;utf8,${generateFromString(myUsername)}`}/>
+                        src={`data:image/svg+xml;utf8,${generateFromString(myUsername)}`}/>
                 </Media.Item>
                 <Media.Item>
                     <Content>
