@@ -1,11 +1,15 @@
-version: "3.9"
 services:
-  server:
+  backend:
     build:
-      context: ./peer-to-peer
+      context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - 3000:3000
+    ports: 
+      - "8300:8300"
+    volumes:
+      - /home/json/.secrets/gdsc/creds.json:/creds.json
+      - /home/json/production/gdsc/log-format.yml:/log-format.yml
+      - /home/json/production/logs/gdsc/:/logs
+  
   client:
     env_file:
       - ./front-end/.env.local
@@ -13,6 +17,13 @@ services:
       context: ./front-end
       dockerfile: Dockerfile
     ports:
-      - 7093:7093
+      - "8301:3000"
     depends_on:
-      - server
+      - backend
+
+  server:
+    build:
+      context: ./peer-to-peer
+      dockerfile: Dockerfile
+    ports:
+      - 8302:7093
