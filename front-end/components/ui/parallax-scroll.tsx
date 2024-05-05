@@ -112,7 +112,7 @@ const CommonPart = ({ el }: { el: string }) => {
       />
       <Download
         onClick={() => handleDownloadOne(el)}
-        className="cursor-pointer absolute inset-0 m-auto w-8 h-8 opacity-0 group-hover:opacity-100 bg-zinc-900 bg-opacity-45 rounded-lg transition duration-200"
+        className="cursor-pointer absolute inset-0 m-auto w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-zinc-800 bg-zinc-900 bg-opacity-45 rounded-lg transition duration-200"
         style={{
           top: "10%",
           left: "10%",
