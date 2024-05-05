@@ -5,6 +5,7 @@ import React from "react";
 
 export default function Page({ params }: { params: { slug: string } }) {
   const { id } = useParams();
+  console.log(params.slug);
   return (
     <div className="dark md:h-screen h-screen w-full dark:bg-black bg-white dark:bg-dot-white/[0.2] bg-dot-black/[0.2]">
       <div className=" relative flex justify-start pl-7">
