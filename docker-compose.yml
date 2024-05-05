@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  server:
+    build:
+      context: ./peer-to-peer
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+  client:
+    env_file:
+      - ./front-end/.env.local
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    ports:
+      - 7093:7093
+    depends_on:
+      - server
