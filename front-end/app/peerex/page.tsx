@@ -1,7 +1,172 @@
+// 'use client'
+// import React, { useRef, useEffect, useState } from "react";
+// import {io} from "socket.io-client";
+// import Peer from "simple-peer";
+
+// function App() {
+//   const socket = useRef();
+//   const peerInstance = useRef<Peer.Instance>();
+//   const fileInput = useRef();
+//   const [myUsername, setMyUsername] = useState("");
+//   const [usersList, setUsersList] = useState([]);
+//   const [peerUsername, setPeerUsername] = useState("");
+//   const [peerSignal, setPeerSignal] = useState("");
+//   const [file, setFile] = useState(null);
+//   const [receivedFilePreview, setReceivedFilePreview] = useState("");
+
+//   const SOCKET_EVENT = {
+//     CONNECTED: "connected",
+//     USERS_LIST: "users_list",
+//     REQUEST_SENT: "request_sent",
+//     REQUEST_ACCEPTED: "request_accepted",
+//     REQUEST_REJECTED: "request_rejected",
+//     SEND_REQUEST: "send_request",
+//     ACCEPT_REQUEST: "accept_request",
+//     REJECT_REQUEST: "reject_request"
+//   };
+
+//   const peerConfig = {
+//     iceServers: [
+//       { urls: "stun:stun.l.google.com:19302" },
+//       { urls: "stun:stun1.l.google.com:19302" },
+//       { urls: "stun:stun2.l.google.com:19302" },
+//       { urls: "stun:stun3.l.google.com:19302" },
+//       { urls: "stun:stun4.l.google.com:19302" }
+//     ]
+//   };
+
+// useEffect(() => {
+//     try {
+//         socket.current = io.connect("localhost:7093"); //connect to the server ($peerex/index.js)
+
+//         socket.current.on(SOCKET_EVENT.CONNECTED, (username: string) => {
+//             console.log("My Username:", username);
+//             setMyUsername(username);
+//             console.log("CONNECTED")
+//         });
+
+//         socket.current.on(SOCKET_EVENT.USERS_LIST, (users: any) => {
+//             setUsersList(users);
+//             console.log("USERS_LIST");
+//         });
+    
+//         socket.current.on(SOCKET_EVENT.REQUEST_SENT, ({ signal, username }) => {
+//             setPeerUsername(username);
+//             setPeerSignal(signal);
+//             console.log("REQUEST_SENT");
+//         });
+    
+//         socket.current.on(SOCKET_EVENT.REQUEST_ACCEPTED, ({ signal }) => {
+//             console.log("signal being sent:", signal);
+//             peerInstance.current.signal(signal);
+//             console.log("REQUEST_ACCEPTED")
+//         });
+
+//         // Listen for file data
+//         console.log("peerinstance = ", peerInstance.current); 
+//         if (peerInstance.current) {
+//             peerInstance.current.on("data", data => {
+//                 // Handle incoming file data
+//                 // For example, you can display the received file preview
+//                 console.table(data);
+//                 setReceivedFilePreview(data);
+//                 console.log(receivedFilePreview);
+    
+//                 console.log("ON SIGNAL DATA");
+//           });
+//         }
+//     } catch (error) {
+//         console.error(error)
+//     }
+//   }, []);
+  
+//     const sendRequest = username => {
+//     try {
+//         console.log('sending to user', username)
+//         const peer = new Peer({
+//           initiator: true,
+//           trickle: false,
+//           config: peerConfig
+//         });
+//         peer.on("connect", () => {
+//             console.log("CONNECTED");
+//         })
+//         peer.on("signal", data => {
+//             console.log("peer socket socketing")
+//             console.log(peer);
+//           socket.current!.emit(SOCKET_EVENT.SEND_REQUEST, {
+//             to: username,
+//             signal: data,
+//             username: myUsername
+//           });
+//         });
+    
+//         peerInstance.current = peer;
+//         console.log("peerinstance.current = ", peer);
+//     } catch (error) {
+//         console.error(error)
+//     }
+//   };
+
+//   const handleFileChange = event => {
+//     const selectedFile = event.target.files[0];
+//     setFile(selectedFile);
+//     console.log(file, selectedFile);
+//   };
+
+//   const sendFile = () => {
+//     try {
+//         if (file && peerInstance.current) {
+//           const reader = new FileReader();
+//           reader.onload = event => {
+//             if (!event.target!.result) {
+//                 alert("You goofed up")
+//                 return
+//             }
+//             const dataUrl = event.target!.result;
+//             console.log(dataUrl)
+//             // console.log(peerInstance)
+//             // console.log(peerInstance.current)
+//             peerInstance.current!.send(dataUrl);
+//           };
+//           reader.readAsDataURL(file);
+//         }
+//         else if (!peerInstance.current) {
+//             console.log("peeriinstacne undefined!!!");
+//         }
+//     } catch (error) {
+//         console.error(error)
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <h2>My Username: {myUsername}</h2>
+//       <input type="file" ref={fileInput} onChange={handleFileChange} />
+//       <button onClick={sendFile}>Send File</button>
+//       <h3>Users Online:</h3>
+//       <ul>
+//         {usersList.map(({ username }) => (
+//           <li key={username}>
+//             {username !== myUsername && (
+//               <button onClick={() => sendRequest(username)}>
+//                 Send Request to {username}
+//               </button>
+//             )}
+//           </li>
+//         ))}
+//       </ul>
+//     </div>
+//   );
+// }
+
+// export default App;
+
+
 'use client'
 import React, { useRef, useEffect, useState } from "react";
 import "react-bulma-components/dist/react-bulma-components.min.css";
-// import "./components/EmptyPlaceholder.css";
+import "@/components/EmptyPlaceholder.css";
 import {
   Container,
   Columns,
@@ -37,12 +202,7 @@ function App() {
     CONNECTED: "connected",
     DISCONNECTED: "disconnect",
     USERS_LIST: "users_list",
-    REQUEST_SENT: "request_sent",
-    REQUEST_ACCEPTED: "request_accepted",
-    REQUEST_REJECTED: "request_rejected",
-    SEND_REQUEST: "send_request",
-    ACCEPT_REQUEST: "accept_request",
-    REJECT_REQUEST: "reject_request"
+    // todo: add on download event
   };
   const peerConfig = {
     iceServers: [
@@ -122,7 +282,7 @@ function App() {
     });
     peerInstance.current = peer;
   };
-  const SERVER_URL = "/";
+  const SERVER_URL = "localhost:7093";
   useEffect(() => {
     socket.current = io.connect(SERVER_URL);
 

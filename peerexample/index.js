@@ -27,17 +27,18 @@ const users = {};
 
 // converts users into a list
 const usersList = (usersObj)=>{
-	const list = [];
-	Object.keys(usersObj).forEach(username=>{
-		list.push({username, timestamp:usersObj[username].timestamp});
-	})
-	return list;
+    const list = [];
+    Object.keys(usersObj).forEach(username=>{
+        list.push({username, timestamp:usersObj[username].timestamp});
+    })
+    console.log("list is", list);
+    return list;
 };
 
 // console log with timestamp
 function Log(message, data){
     console.log((new Date()).toISOString(),message, data);
-};
+}
 
 io.on("connection", (socket) => {
     //generate username against a socket connection and store it
@@ -45,7 +46,7 @@ io.on("connection", (socket) => {
     if (!users[username]) {
       users[username] = { id: socket.id, timestamp: new Date().toISOString() };
     }
-    logger.log(SOCKET_EVENT.CONNECTED, username);
+    Log("connected", username);
     // send back username
     socket.emit(SOCKET_EVENT.CONNECTED, username);
     // send online users list
@@ -83,4 +84,3 @@ io.on("connection", (socket) => {
   const port = 7093;
   http.listen(port);
   Log("server listening on port", port);
-
