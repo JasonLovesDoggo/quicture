@@ -167,6 +167,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import "react-bulma-components/dist/react-bulma-components.min.css";
 import "@/components/EmptyPlaceholder.css";
+// @ts-ignore
 import {
   Container,
   Columns,
@@ -179,11 +180,11 @@ import ShareRequest from "@/components/ShareRequest";
 import ImageUploader from "@/components/ImageUploader";
 import EmptyPlaceholder from "@/components/EmptyPlaceholder";
 import Loader from "@/components/Loader";
-import logo from "@/logo.png";
-import io from "socket.io-client";
+import logo from "@/components/logo.png";
+import {io} from "socket.io-client";
 import Peer from "simple-peer";
 
-function App() {
+function PeerToPeer() {
   const socket = useRef();
   const peerInstance = useRef();
   const [requested, setRequested] = useState(false);
@@ -415,4 +416,4 @@ function App() {
   );
 }
 
-export default App;
+export default PeerToPeer;
