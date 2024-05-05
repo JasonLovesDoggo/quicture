@@ -58,7 +58,6 @@ const UserForm = () => {
   };
   const handleCheckboxChange = (checked: boolean) => {
     setIsChecked(checked);
-    console.log(checked);
   };
 
   return (

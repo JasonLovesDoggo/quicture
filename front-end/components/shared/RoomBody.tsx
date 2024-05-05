@@ -7,23 +7,28 @@ import SlideMotionDiv from "../ui/slide-motion-div";
 
 const RoomBody = ({ id }: { id: string }) => {
   const [images, setImages] = useState<string[]>([]);
-  console.log("prev images", images);
+  // console.log("prev images", images);
+  setTimeout(() => {
+      // console.log(process.env.NEXT_PUBLIC_BACKEND);
+      (async () =>
+        setImages(
+          await (
+            await fetch(process.env.NEXT_PUBLIC_BACKEND + `/list/${id}/`)
+          ).json()
+        ))();
+  }
+    , 900);
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     console.table(e.target.files);
     if (e.target.files) {
       const formData = new FormData(); // Create a new FormData object
       const imgArray = Array.from(e.target.files);
 
-      // formData.append("files[]", imgArray];
       imgArray.forEach((file: File) => {
         formData.append("files", file);
       });
-      console.warn("NDIWJDWODK");
       const options = {
         method: "POST",
-        // headers: {
-        //   "Content-Type": "multipart/form-data",
-        // },
         accept: "application/json",
         body: formData,
       };
