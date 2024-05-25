@@ -1,3 +1,4 @@
+> Alternate frontend https://share.jasoncameron.dev/
 
 ## Inspiration
 We stumbled upon a common yet not talked about issue regarding image sharing. Any time you need to ask a friend to share photos with you, they may typically send these photos to you over some social media/messaging app like discord or instagram (or sometimes even email). This is insanity! Images that are shared over these platforms are always heavily compressed, and this means that you are compromising on the quality of these images.
